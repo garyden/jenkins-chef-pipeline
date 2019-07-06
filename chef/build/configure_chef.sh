@@ -52,8 +52,8 @@ fi
 
 echo -e "\n\n$URL is available!\n"
 echo -e "\nSetting up admin user and default organization"
-chef-server-ctl user-create admin Admin User admin@myorg.com "passwd"  --filename /etc/chef/admin.pem
-chef-server-ctl org-create my_org "Default organization" --association_user admin --filename /etc/chef/my_org-validator.pem
+chef-server-ctl user-create admin Admin User admin@chefjenkins.com "passwd"  --filename /etc/chef/admin.pem
+chef-server-ctl org-create chefjenkins "Default organization" --association_user admin --filename /etc/chef/chefjenkins-validator.pem
 echo -e "\nRunning: 'chef-server-ctl install chef-manage'"...
 chef-server-ctl install chef-manage
 echo -e "\nRunning: 'chef-server-ctl reconfigure'"...
@@ -62,7 +62,7 @@ echo "{ \"error\": \"Please use https:// instead of http:// !\" }" > /var/opt/op
 sed -i "s,/503.json;,/503.json;\n    error_page 497 =503 /500.json;,g" /var/opt/opscode/nginx/etc/chef_https_lb.conf
 sed -i '$i\    location /knife_admin_key.tar.gz {\n      default_type application/zip;\n      alias /etc/chef/knife_admin_key.tar.gz;\n    }' /var/opt/opscode/nginx/etc/chef_https_lb.conf
 echo -e "\nCreating tar file with the Knife keys"
-cd /etc/chef/ && tar -cvzf knife_admin_key.tar.gz admin.pem my_org-validator.pem
+cd /etc/chef/ && tar -cvzf knife_admin_key.tar.gz admin.pem chefjenkins-validator.pem
 echo -e "\nRestart Nginx..."
 chef-server-ctl restart nginx
 chef-server-ctl status
